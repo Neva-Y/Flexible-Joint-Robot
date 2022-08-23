@@ -19,7 +19,7 @@ init = [theta_m_init; theta_l_init; thetadot_m_init; thetadot_l_init; Ia_init];
 % FOR VISION:
 % > The frames per second [fps]
 % > Allowed values: 25, 50, 100
-vision_fps = 25;
+vision_fps = 50;
 
 % FOR ABSOLUTE ENCODER
 % > Number of counts per revolution
@@ -27,7 +27,7 @@ absolute_encoder_counts_per_revolution = 128;
 
 % FOR POTENTIOMETER
 % > Percentage linearity [percent]
-potentiometer_linearity_percent = 20;
+potentiometer_linearity_percent = 0.2;
 
 % FOR TACHOMETER
 % > Number of counts per revolution
