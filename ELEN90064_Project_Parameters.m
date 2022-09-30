@@ -1,11 +1,11 @@
 %% DEFINE THE PLANT INITIAL CONDITIONS
 
 % Initial link angle [radians]
-theta_l_init = deg2rad(30);
+theta_l_init = deg2rad(0);
 % Initial link velocity [radians/second]
 thetadot_l_init = deg2rad(0);
 % Initial motor angle [radians]
-theta_m_init = deg2rad(30);
+theta_m_init = deg2rad(0);
 % Initial motor velocity [radians/second]
 thetadot_m_init = deg2rad(0);
 % Initial motor current [Amps]

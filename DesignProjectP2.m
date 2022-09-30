@@ -76,21 +76,26 @@ rank(obsv(A,C_pot+C_vis), tolerance)
 
 % Controller Design (Need Integrator since IMP)
 C = [0 1 0 0 0];
-A_aug = [zeros(1,1) C;
-         zeros(5,1) A];
+
+A_aug = [zeros(1, 1) [0 1 0 0 0] ;
+         zeros(5, 1) A ];
+
 B_aug = [zeros(1,1); B];
 
-C_aug = [zeros(5,1) eye(5)];
 
-D_aug = zeros(1,1);
+controller_poles = [-10+1.5j, -10-1.5j, -40, -45, -50, -55];
+K = place(A_aug, B_aug, controller_poles);
 
-s = tf('s');
-G = C_aug*inv((s*eye(6) - A_aug))*B_aug;
+Ki = K(1);
+K = K(2:6);
 
-r = [deg2rad(60)];
+% Observer Design
 
+C = [1 0 0 0 0;
+     0 0 1 0 0];
 
-K = acker(A_aug, B_aug, [-2.8, -3, -3.5, -4, -4.5, -5])
+% Transpose for duality when doing observer design
+observer_poles = [-800 -900 -1000 -1100 -1200]*3
+L = place(A', C', observer_poles)'
 
-Ki = K(1:2)
-K = K(2:6)
+est_poles = eig(A - L*C)
