@@ -180,17 +180,6 @@ C_d = [1 0]
 
 
 
-
-% A_dist = [A_aug zeros(6,2);
-%           C_d'*[0 0 1 0 0 0] A_d']
-% B_dist = [B_aug; zeros(2,1)]
-% C_dist = [[0 0 1 0 0 0] zeros(1,2)]
-% K_dist = place(A_dist, B_dist, [controller_poles -100 -110])
-
-% Ki_sin = K_dist(1)
-% K_sin = K_dist(2:6)
-% Kd_sin = K_dist(7:8)
-
 A_dist = [A zeros(5,2);
            C_d'*[0 1 0 0 0] A_d']
 B_dist = [B; zeros(2,1)]
@@ -199,20 +188,4 @@ K_dist = place(A_dist, B_dist, [controller_poles -100]/2)
 K_sin = K_dist(1:5)
 Kd_sin = K_dist(6:7)
 
-G_tf = tf(ss(A_dist-B_dist*K_dist, B_dist, C_dist, 0));
- G_tf_num = cell2mat(G_tf.Numerator);
-G_tf_den = cell2mat(G_tf.Denominator);
-N_x = G_tf_den(end)/G_tf_num(end)
 
-%%%%%%%%%%%%%
-A_measured = [A(2,:); A(3,:)]
-A_estimated = [A(1,:); A(4,:)]
-
-A_11 = A_measured(:,1:2)
-A_12 = A_measured(:,3:5)
-A_21 = A_estimated(:,1:2)
-A_22 = A_estimated(:,3:5)
-B_1 = [B(2); B(3)]
-B_2 = [B(1); B(4)]
-obsz = exp([-700 -900 -1200]*T);
-J_r = place(A_22', A_12', obsz)'
