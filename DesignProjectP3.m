@@ -38,35 +38,40 @@ B_aug = [zeros(1,1); B];
 C_aug = [0 1 0 0 0 0];
 %syms s
 %G = C_aug*inv(s*eye(6)-A_aug)*B_aug
-[b,a] = ss2tf(A_aug, B_aug, C_aug, 0)
-G = tf(b,a)
+[b,a] = ss2tf(A_aug, B_aug, C_aug, 0);
+G = tf(b,a);
+[num,den] = tfdata(G);
 syms s
-G_sym = poly2sym(cell2mat(num),s)/poly2sym(cell2mat(den),s)
-G_sym_neg = subs(G_sym, s, -s)
-G_SRL = syms2tf(G_sym*G_sym_neg)
+G_sym = poly2sym(cell2mat(num),s)/poly2sym(cell2mat(den),s);
+G_sym_neg = subs(G_sym, s, -s);
+G_SRL = syms2tf(G_sym*G_sym_neg);
 rlocus(G_SRL)
+rho = 700;
 
-rho = 700
-
-
-
-Q = diag([10000, 100, 100, 10, 10, 1]);
+Q = diag([10000, 1000, 1000, 100, 100, 1]);
 R = 1;
 
-[X, K] = icare(A_aug, B_aug, Q, R);
+Kr = lqr(A_aug, B_aug, Q, R);
 
 
-Ki = K(1);
-K = K(2:6);
+Ki = Kr(1);
+K = Kr(2:6);
 
 
 % Observer Design
 
 C = [1 0 0 0 0;
-     0 1 0 0 0];
+     0 0 0 1 0];
 
 % Transpose for duality when doing observer design
-observer_poles = [-9600 -10800 -12000 -13200 -14400];
-L = place(A', C', observer_poles)';
 
-est_poles = eig(A - L*C)
+W = eye(5)*100; % Model Noise
+ 
+V = diag([.01, 10]);  % Sensor Error
+
+[P, L_t, O] = icare(A',C',W,V);
+
+L = L_t';
+
+
+
