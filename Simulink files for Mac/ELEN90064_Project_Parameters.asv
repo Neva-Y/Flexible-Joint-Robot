@@ -34,7 +34,7 @@ potentiometer_linearity_percent = 0.2;
 tachometer_counts_per_revolution = 2048;
 % > Frequency of the velocity estimates
 % > Allowed values: 10, 25, 50, 100
-tachometer_output_frequency = 100;
+tachometer_output_frequency = 50;
 
 % FOR GYROSCOPE
 % > Variance of the noise that drives the drift process [rad/s^2]

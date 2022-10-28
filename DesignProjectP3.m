@@ -81,7 +81,7 @@ Phia = [1 [0 1 0 0 0]; zeros(n,1) Phi];
 Gama = [0; Gam];
 
 % Solve discrete ARE
-Q_disc = diag([10000, 100, 100, 1000, 1000, 1]);
+Q_disc = diag([10000, 1000, 1000, 30000, 30000, 1]);
 R_disc = 1;
 [X, Kr_disc] = idare(Phia, Gama, Q_disc, R_disc);
 Ki_disc = Kr_disc(1);
@@ -89,7 +89,7 @@ K_disc = Kr_disc(2:6);
 
 % Discrete observer design
 W_disc = eye(5)*10000; % Model Noise
-V_disc = diag([.01, 10]);  % Sensor Error
+V_disc = diag([.0001, 0.1]);  % Sensor Error
 [P, L_disct, O] = idare(Dp.a',C',W_disc,V_disc);
 L_disc = L_disct';
 
