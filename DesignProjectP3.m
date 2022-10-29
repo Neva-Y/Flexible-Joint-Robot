@@ -35,7 +35,7 @@ A_aug = [zeros(1, 1) [0 1 0 0 0] ;
 B_aug = [zeros(1,1); B];
 
 % SRL Design
-C_aug = [0 1 0 0 0 0];
+C_aug = [0 0 1 0 0 0];
 %syms s
 %G = C_aug*inv(s*eye(6)-A_aug)*B_aug
 [b,a] = ss2tf(A_aug, B_aug, C_aug, 0);
