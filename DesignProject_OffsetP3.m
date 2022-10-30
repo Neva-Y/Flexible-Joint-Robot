@@ -44,7 +44,9 @@ G = tf(b,a);
 syms s
 G_sym = poly2sym(cell2mat(num),s)/poly2sym(cell2mat(den),s);
 G_sym_neg = subs(G_sym, s, -s);
-G_SRL = syms2tf(G_sym*G_sym_neg);
+G_SRL_syms = G_sym*G_sym_neg;
+pretty
+G_SRL = syms2tf(G_SRL_syms);
 rlocus(G_SRL)
 rho = 700;
 

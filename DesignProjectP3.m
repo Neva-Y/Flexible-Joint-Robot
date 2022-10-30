@@ -48,8 +48,8 @@ G_SRL = syms2tf(G_sym*G_sym_neg);
 rlocus(G_SRL)
 rho = 700;
 
-%Q_SRL = rho* (C' * C);
-%R_SRL = 1;
+Q_SRL = rho* (C' * C);
+R_SRL = 1;
 
 
 
@@ -71,7 +71,7 @@ V = diag([.01, 10]);  % Sensor Error
 L = L_t';
 
 
-% Discrete controller design
+%% Discrete controller design
 T = 1/50;
 Gp = ss(A, B, eye(5), 0);
 Dp = c2d(Gp, T, 'zoh');
