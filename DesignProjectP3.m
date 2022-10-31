@@ -46,11 +46,15 @@ G_sym = poly2sym(cell2mat(num),s)/poly2sym(cell2mat(den),s);
 G_sym_neg = subs(G_sym, s, -s);
 G_SRL = syms2tf(G_sym*G_sym_neg);
 rlocus(G_SRL)
-rho = 700;
+rho = 50000;
 
-%Q_SRL = rho* (C' * C);
-%R_SRL = 1;
+C_SRL = eye(6);
 
+Q_SRL = rho* (C_SRL' * C_SRL);
+R_SRL = 1;
+Kr = lqr(A_aug, B_aug, Q_SRL, R_SRL);
+Ki = Kr(1);
+K = Kr(2:6);
 
 
 Q = diag([100000, 1000, 1000, 100, 100, 1]);
@@ -66,7 +70,7 @@ C = [1 0 0 0 0;
 
 % Transpose for duality when doing observer design
 W = eye(5)*1000; % Model Noise
-V = diag([.01, 10]);  % Sensor Error
+V = diag([.1, 10]);  % Sensor Error
 [P, L_t, O] = icare(A',C',W,V);
 L = L_t';
 

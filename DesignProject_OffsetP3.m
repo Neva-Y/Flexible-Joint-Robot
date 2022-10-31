@@ -100,39 +100,18 @@ w = 2*pi*1/4;
 A_d = [0 w; -w 0];
 C_d = [1 0];
 
-A_sin = [A_aug zeros(6,2);
-         C_d'*[0 0 1 0 0 0] A_d'];
-B_sin = [B_aug; zeros(2,1)];
+sys_c_sin = ss(A_d, [0;0], C_d, 0);
+sys_d_sin = c2d(sys_c_sin, T, 'zoh');
+
+A_sin = [Phia zeros(6,2);
+         C_d'*[0 0 1 0 0 0] sys_d_sin.a'];
+B_sin = [Gama; zeros(2,1)];
 C_sin = [0 0 1 0 0 0 zeros(1,2)];
 
-G_sin = ss(A_sin, B_sin, C_sin, 0);
-D_sin = c2d(G_sin, T, 'zoh');
-Q_disc = diag([10000, 100000, 100000, 1, 1, 1, 50, 50]);
+Q_disc = diag([10000, 100, 100, 1, 1, 1, 15000, 15000]);
 R_disc = 1;
-[X, K_dist] = idare(D_sin.a, D_sin.b, Q_disc, R_disc);
+[X, K_dist] = idare(A_sin, B_sin, Q_disc, R_disc);
 Ki = K_dist(1);
 K = K_dist(2:6);
 K_sin = K_dist(7:8);
 
-% Nonlinearities have additional frequency dynamics
-% T_dist = 73.89 - 72.54;
-% w_dist = 2*pi*1/T_dist;
-% A_d2 = [0 w_dist; -w_dist 0];
-% C_d2 = [1 0];
-% 
-% A_sin = [A_sin zeros(8,2);
-%            C_d2'*[0 0 1 0 0 0 0 0] A_d2'];
-% B_sin = [B_sin; zeros(2,1)];
-% C_sin = [C_sin zeros(1,2)];
-% 
-% G_sin = ss(A_sin, B_sin, C_sin, 0);
-% D_sin = c2d(G_sin, T, 'zoh');
-% 
-% Q_disc = diag([15000, 300000, 300000, 1000, 1000, 1, 10, 10, 50, 50]);
-% R_disc = 1;
-% 
-% [X, K_dist] = idare(D_sin.a, D_sin.b, Q_disc, R_disc);
-% Ki = K_dist(1);
-% K = K_dist(2:6);
-% K_sin = K_dist(7:8);
-% K_d = K_dist(9:10);
