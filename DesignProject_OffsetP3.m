@@ -45,7 +45,7 @@ syms s
 G_sym = poly2sym(cell2mat(num),s)/poly2sym(cell2mat(den),s);
 G_sym_neg = subs(G_sym, s, -s);
 G_SRL_syms = G_sym*G_sym_neg;
-pretty
+
 G_SRL = syms2tf(G_SRL_syms);
 rlocus(G_SRL)
 rho = 700;
@@ -105,33 +105,34 @@ A_sin = [A_aug zeros(6,2);
 B_sin = [B_aug; zeros(2,1)];
 C_sin = [0 0 1 0 0 0 zeros(1,2)];
 
-% G_sin = ss(A_sin, B_sin, C_sin, 0);
-% D_sin = c2d(G_sin, T, 'zoh');
-% Q_disc = diag([100000, 100000, 1, 1, 1, 50, 50]);
-% R_disc = 1;
-% [X, K_dist] = idare(D_sin.a, D_sin.b, Q_disc, R_disc);
-% K = K_dist(1:5);
-% K_sin = K_dist(6:7);
-
-% Nonlinearities have additional frequency dynamics
-T_dist = 73.89 - 72.54;
-w_dist = 2*pi*1/T_dist;
-A_d2 = [0 w_dist; -w_dist 0];
-C_d2 = [1 0];
-
-A_sin = [A_sin zeros(8,2);
-           C_d2'*[0 0 1 0 0 0 0 0] A_d2'];
-B_sin = [B_sin; zeros(2,1)];
-C_sin = [C_sin zeros(1,2)];
-
 G_sin = ss(A_sin, B_sin, C_sin, 0);
 D_sin = c2d(G_sin, T, 'zoh');
-
-Q_disc = diag([15000, 300000, 300000, 1000, 1000, 1, 10, 10, 50, 50]);
+Q_disc = diag([10000, 100000, 100000, 1, 1, 1, 50, 50]);
 R_disc = 1;
-
 [X, K_dist] = idare(D_sin.a, D_sin.b, Q_disc, R_disc);
 Ki = K_dist(1);
 K = K_dist(2:6);
 K_sin = K_dist(7:8);
-K_d = K_dist(9:10);
+
+% Nonlinearities have additional frequency dynamics
+% T_dist = 73.89 - 72.54;
+% w_dist = 2*pi*1/T_dist;
+% A_d2 = [0 w_dist; -w_dist 0];
+% C_d2 = [1 0];
+% 
+% A_sin = [A_sin zeros(8,2);
+%            C_d2'*[0 0 1 0 0 0 0 0] A_d2'];
+% B_sin = [B_sin; zeros(2,1)];
+% C_sin = [C_sin zeros(1,2)];
+% 
+% G_sin = ss(A_sin, B_sin, C_sin, 0);
+% D_sin = c2d(G_sin, T, 'zoh');
+% 
+% Q_disc = diag([15000, 300000, 300000, 1000, 1000, 1, 10, 10, 50, 50]);
+% R_disc = 1;
+% 
+% [X, K_dist] = idare(D_sin.a, D_sin.b, Q_disc, R_disc);
+% Ki = K_dist(1);
+% K = K_dist(2:6);
+% K_sin = K_dist(7:8);
+% K_d = K_dist(9:10);
